@@ -35,7 +35,7 @@ if page == "Erdal, Askøy":
        # Display the map in Streamlit
     st_folium(m, width=700, height=500)
     st.subheader("Catchment Zones")
-    st.image("ERDAL.png", caption="Zones", use_column_width=True)
+    st.image("ERDAL.png", caption="Zones", use_container_width=True)
     st.write("The map over illustrates the sewer zones in the Erdal.")
 
 elif page == "Infiltration and Inflow":
@@ -271,13 +271,21 @@ elif page == "Infiltration and Inflow":
 
     df_result = pd.DataFrame(ii_results)
 
-    valid_subset = [col for col in ["SomeColumn"] if col in df.columns]
-    styled_df = df.style.apply(some_func, subset=valid_subset)
-    lambda val: 'color: red; font-weight: bold' if val == "🚨 High I/I" else '',
-    subset=["Status"]
-    )
-
-    st.dataframe(styled_df)
+    highlight_columns = ["DWF I/I Status", "MNF I/I Status", "DWF vs WWT I/I Status", "SWMM I/I Status", "Status"]
+    existing_cols = [col for col in highlight_columns if col in df.columns]
+    
+    if existing_cols:
+        styled_df = df.style.applymap(
+            lambda val: (
+                'color: red; font-weight: bold' if "🚨" in str(val) else
+                'color: green; font-weight: bold' if "✅" in str(val) else
+                'color: orange; font-weight: bold' if "🟠" in str(val) else ''
+            ),
+            subset=existing_cols
+        )
+        st.dataframe(styled_df)
+    else:
+        st.dataframe(df)
     
     #st.bar_chart(df_result.set_index("Sensor")["I/I Volume (L)"])
 
@@ -623,7 +631,7 @@ if page == "Zone Map and Recommendation":
             draw.text((center_x - 20, center_y - 10), name, fill="black")
 
     # Show the result
-    st.image(image, caption="I/I Zone Map", use_column_width=True)
+    st.image(image, caption="I/I Zone Map", use_container_width=True)
 
 
     st.subheader("Recommendation")
