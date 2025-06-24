@@ -12,16 +12,6 @@ import os
 import configparser
 import numpy as np
 
-# Language selector
-lang = st.sidebar.selectbox("Language / Språk", ["English", "Norwegian"])
-lang_code = 'en' if lang == "English" else 'no'
-
-# Load translation file
-config = configparser.ConfigParser()
-config.read(f'language_{lang_code}.ini')
-
-_ = lambda key: config.get("texts", key, fallback=key)  # fallback if key missing
-
 
 st.sidebar.title("Contents")
 page = st.sidebar.radio("Select a page:", ["Erdal, Askøy", "Infiltration and Inflow", "Zone Map and Recommendation", "Steinrusten Rain Gauge", "Erdal Water Consumption", "Sensor and Zone Data"])
