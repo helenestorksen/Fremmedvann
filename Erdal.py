@@ -1,4 +1,4 @@
-﻿import streamlit as st
+import streamlit as st
 import folium
 from streamlit_folium import st_folium
 import pandas as pd
@@ -271,8 +271,9 @@ elif page == "Infiltration and Inflow":
 
     df_result = pd.DataFrame(ii_results)
 
-    valid_subset = [col for col in ["SomeColumn"] if col in df.columns]
-    styled_df = df.style.apply(some_func, subset=valid_subset)
+    styled_df = df_result.style.applymap(
+        lambda val: 'color: red; font-weight: bold' if val == "🚨 High I/I" else '',
+        subset=["Status"]
     )
 
     st.dataframe(styled_df)
