@@ -274,7 +274,7 @@ elif page == "Infiltration and Inflow":
     valid_subset = [col for col in ["SomeColumn"] if col in df.columns]
     styled_df = df.style.apply(some_func, subset=valid_subset)
     lambda val: 'color: red; font-weight: bold' if val == "🚨 High I/I" else '',
-        subset=["Status"]
+    subset=["Status"]
     )
 
     st.dataframe(styled_df)
