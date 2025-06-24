@@ -271,9 +271,8 @@ elif page == "Infiltration and Inflow":
 
     df_result = pd.DataFrame(ii_results)
 
-    styled_df = df_result.style.applymap(
-        lambda val: 'color: red; font-weight: bold' if val == "🚨 High I/I" else '',
-        subset=["Status"]
+    valid_subset = [col for col in ["SomeColumn"] if col in df.columns]
+    styled_df = df.style.apply(some_func, subset=valid_subset)
     )
 
     st.dataframe(styled_df)
